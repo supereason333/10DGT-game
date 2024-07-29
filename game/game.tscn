@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://27r2a465cbnx"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 31.0
+offset_right = 499.0
+offset_bottom = 87.0
+
+[node name="WorkButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Make products"
+
+[node name="Spacer2" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(30, 2.08165e-12)
+layout_mode = 2
+
+[node name="SellButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Sell Products"
+
+[node name="Spacer3" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(30, 2.08165e-12)
+layout_mode = 2
+
+[node name="DataPanels" type="PanelContainer" parent="TopBar"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBar/DataPanels"]
+layout_mode = 2
+
+[node name="MoneyLabel" type="Label" parent="TopBar/DataPanels/VBoxContainer"]
+layout_mode = 2
+text = "Money: 0"
+
+[node name="ProductLabel" type="Label" parent="TopBar/DataPanels/VBoxContainer"]
+layout_mode = 2
+text = "Products: 0"
+
+[node name="Spacer" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(100, 2.08165e-12)
+layout_mode = 2
