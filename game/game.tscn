@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://27r2a465cbnx"]
+[gd_scene load_steps=3 format=3 uid="uid://27r2a465cbnx"]
+
+[ext_resource type="Script" path="res://game/game.gd" id="1_cglea"]
+[ext_resource type="PackedScene" uid="uid://b4ijfkqv0nkdk" path="res://game/generators/generator.tscn" id="2_7rkr1"]
 
 [node name="Game" type="Control"]
 layout_mode = 3
@@ -7,43 +10,45 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_cglea")
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 2
-offset_top = 31.0
-offset_right = 499.0
-offset_bottom = 87.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 539.0
+offset_bottom = 96.0
 
-[node name="WorkButton" type="Button" parent="TopBar"]
-layout_mode = 2
-text = "Make products"
-
-[node name="Spacer2" type="Control" parent="TopBar"]
-custom_minimum_size = Vector2(30, 2.08165e-12)
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBar"]
 layout_mode = 2
 
-[node name="SellButton" type="Button" parent="TopBar"]
-layout_mode = 2
-text = "Sell Products"
-
-[node name="Spacer3" type="Control" parent="TopBar"]
-custom_minimum_size = Vector2(30, 2.08165e-12)
-layout_mode = 2
-
-[node name="DataPanels" type="PanelContainer" parent="TopBar"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TopBar/DataPanels"]
-layout_mode = 2
-
-[node name="MoneyLabel" type="Label" parent="TopBar/DataPanels/VBoxContainer"]
+[node name="MoneyLabel" type="Label" parent="TopBar/VBoxContainer"]
 layout_mode = 2
 text = "Money: 0"
 
-[node name="ProductLabel" type="Label" parent="TopBar/DataPanels/VBoxContainer"]
+[node name="ProductLabel" type="Label" parent="TopBar/VBoxContainer"]
 layout_mode = 2
 text = "Products: 0"
 
-[node name="Spacer" type="Control" parent="TopBar"]
-custom_minimum_size = Vector2(100, 2.08165e-12)
+[node name="Control" type="Control" parent="TopBar"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopBar"]
+layout_mode = 2
+text = "Other thing"
+
+[node name="GeneratorContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 192.0
+offset_right = 340.0
+offset_bottom = 904.0
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GeneratorContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Generator" parent="GeneratorContainer/VBoxContainer" instance=ExtResource("2_7rkr1")]
 layout_mode = 2

@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4ijfkqv0nkdk"]
+
+[ext_resource type="Script" path="res://game/generators/generator.gd" id="1_2tgsg"]
+
+[node name="Generator" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("1_2tgsg")
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Generator"
+
+[node name="DataLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Makes 1 product in 1 second"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="OwnedLabel" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "Owned: 0"
+
+[node name="Spacer" type="Control" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PPSLabel" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "PPS: 1"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Buy $0"
+
+[node name="SellButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Sell $0"
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+show_percentage = false
+
+[node name="GeneratorTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="pressed" from="HBoxContainer/BuyButton" to="." method="_on_buy_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/SellButton" to="." method="_on_sell_button_pressed"]
+[connection signal="timeout" from="GeneratorTimer" to="." method="_on_generator_timer_timeout"]
