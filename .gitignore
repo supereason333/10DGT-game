@@ -1,2 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
+
+
+# The stupid mac files
+*.DS_Store
+.DS_Store
