@@ -2,9 +2,16 @@ extends Node
 class_name CostProfile
 
 @export var base_cost:float
+@export var step_add:float
+@export var step_mult:float
 
-func get_next_cost():
-	pass
+var table := [0.0]
 
 func get_cost(number:int):
-	pass
+	if number >= len(table):
+		calc_to(number)
+	return table[number]
+
+func calc_to(target:int):
+	while len(table) <= target:
+		table.append((table[-1] + step_add) * step_mult)

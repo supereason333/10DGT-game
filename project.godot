@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 GlobalValues="*res://game/global_values.gd"
+NumberFormatter="*res://utils/number_formatter.gd"
+SaverLoader="*res://utils/saver_loader/saver_loader.gd"
 
 [display]
 

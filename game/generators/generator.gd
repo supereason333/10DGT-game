@@ -7,9 +7,15 @@ var gen := PassiveGenerator.new()
 @onready var data_label := $DataLabel
 @onready var owned_label := $HBoxContainer2/OwnedLabel
 @onready var pps_label := $HBoxContainer2/PPSLabel
+@onready var buy_button := $HBoxContainer/BuyButton
+@onready var sell_button := $HBoxContainer/SellButton
 
 func _ready():
-	gen.cost = 0
+	gen.cost_profile = CostProfile.new()
+	gen.cost_profile.base_cost = 0
+	gen.cost_profile.step_add = 1
+	gen.cost_profile.step_mult = 1.1
+	
 	gen.produces = 1
 	gen.speed = 1
 	gen.amount = 0
@@ -27,6 +33,8 @@ func update_display():
 	owned_label.text = "Owned: " + str(gen.amount)
 	pps_label.text = "PPS: " + str(gen.produces * gen.amount / gen.speed)
 	data_label.text = "Makes " + str(gen.produces  * gen.amount) + " product(s) in " + str(gen.speed) + " seconds"
+	buy_button.text = "Buy $" + str(gen.cost_profile.get_cost(gen.amount))
+	sell_button.text = "Sell $ NOT IMPLIMENTTED"
 
 # Node signals
 

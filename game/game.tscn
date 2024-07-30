@@ -1,7 +1,20 @@
 [gd_scene load_steps=3 format=3 uid="uid://27r2a465cbnx"]
 
-[ext_resource type="Script" path="res://game/game.gd" id="1_cglea"]
 [ext_resource type="PackedScene" uid="uid://b4ijfkqv0nkdk" path="res://game/generators/generator.tscn" id="2_7rkr1"]
+
+[sub_resource type="GDScript" id="GDScript_iulk2"]
+script/source = "extends Control
+
+@onready var money_label := $TopBar/VBoxContainer/MoneyLabel
+@onready var product_label := $TopBar/VBoxContainer/ProductLabel
+
+func update_display():
+	money_label.text = \"Money: \" + str(GlobalValues.money)
+	product_label.text = \"Products: \" + str(GlobalValues.products)
+
+func _process(delta):
+	update_display()
+"
 
 [node name="Game" type="Control"]
 layout_mode = 3
@@ -10,7 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_cglea")
+script = SubResource("GDScript_iulk2")
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 layout_mode = 2
