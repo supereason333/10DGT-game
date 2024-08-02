@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cdhvy0442iopo"]
 
-[ext_resource type="PackedScene" uid="uid://c8jj61j8w1y8u" path="res://menus/saves_button.tscn" id="1_pm2qm"]
+[ext_resource type="Script" path="res://menus/main_menu.gd" id="1_734gk"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -9,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_734gk")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
@@ -21,16 +22,7 @@ grow_horizontal = 2
 grow_vertical = 0
 vertical_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer"]
-layout_mode = 2
-
-[node name="SavesButton1" parent="ScrollContainer/HBoxContainer" instance=ExtResource("1_pm2qm")]
-layout_mode = 2
-
-[node name="SavesButton2" parent="ScrollContainer/HBoxContainer" instance=ExtResource("1_pm2qm")]
-layout_mode = 2
-
-[node name="SavesButton3" parent="ScrollContainer/HBoxContainer" instance=ExtResource("1_pm2qm")]
+[node name="SavesContainer" type="HBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 
 [node name="Title" type="Label" parent="."]

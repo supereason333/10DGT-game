@@ -1,4 +1,4 @@
-extends Node
+extends Resource
 class_name CostProfile
 
 @export var base_cost:float
@@ -8,6 +8,7 @@ class_name CostProfile
 var table := [0.0]
 
 func get_cost(number:int):
+	table[0] = base_cost
 	if number >= len(table):
 		calc_to(number)
 	return table[number]

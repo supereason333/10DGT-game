@@ -1,9 +1,12 @@
-[gd_scene format=3 uid="uid://c8jj61j8w1y8u"]
+[gd_scene load_steps=2 format=3 uid="uid://c8jj61j8w1y8u"]
+
+[ext_resource type="Script" path="res://menus/saves_button.gd" id="1_nfi3i"]
 
 [node name="SavesButton" type="Control"]
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_nfi3i")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -21,10 +24,32 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="NameLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Save 1"
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MoneyLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Money: "
+
+[node name="ProductLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Products: "
+
+[node name="LoadButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Load"
+
+[node name="Spacer" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DeleteButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Delete Save"
+
+[connection signal="pressed" from="VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

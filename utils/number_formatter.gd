@@ -1,40 +1,39 @@
 extends Node
 
-func _ready():
-	print(sci_format(0.00000234223, 4))
-
-func format(input:float):
+func format(input:float) -> String:
 	var settings := SaverLoader.load_settings()
 	
 	match settings.number_format:
-		0:
-			return input
-		1:
-			return 
+		0:				# unformated
+			return str(input)
+		1:				# rounded if small, sci format if large
+			if input >= pow(10, settings.number_format_accuracy + 2):
+				return sci_format(input, settings.number_format_accuracy)
+			else:
+				return str(snapped(input, 1 / pow(10, settings.number_format_accuracy)))
+		2:				# sci format for all
+			return sci_format(input, settings.number_format_accuracy)
 		_:
-			return input
+			return str(input)
 
-func sci_format(number:float, dp:int) -> String:
-	var return_string := ""
-	var num := str(number)
-	if !num.contains("."):
-		num += ".0"
+func sci_format(number:float, decimal_places:int) -> String:
+	# this code was totaly not written by chatgpt i am totaly not incompetent
+	var abs_number = abs(number)
+	var exponent = 0
 	
-	var whole := num.split(".")[0]
-	var deci := num.split(".")[1]
+	if abs_number != 0.0:
+		while abs_number >= 10.0:
+			abs_number /= 10.0
+			exponent += 1
+		while abs_number < 1.0:
+			abs_number *= 10.0
+			exponent -= 1
 	
-	if int(whole) != 0:
-		return_string += whole[0] + "."
-		
-		var exp:int = len(whole) - 1
-		
-		if len(whole + deci) <= dp:
-			var zero := ""
-			for i in range(dp - len(str(whole + deci)) + 1):
-				zero += "0"
-				
-			return_string += str(whole + deci).right(-1) + zero + "e" + str(exp)
-		else:
-			return_string += str(whole + deci).right(-1).left(dp) + "e" + str(exp)
+	# Format the number with specified decimal places
+	var format_string = "%." + str(decimal_places) + "f"
+	var formatted_number = format_string % abs_number
 	
-	return return_string
+	if number < 0:
+		formatted_number = "-" + formatted_number
+	
+	return formatted_number + "e" + str(exponent)

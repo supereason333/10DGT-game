@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="SavedData" load_steps=10 format=3 uid="uid://dhyhm6pkor42j"]
+
+[ext_resource type="Script" path="res://game/generators/cost_profile.gd" id="1_34de8"]
+[ext_resource type="Script" path="res://game/generators/generatorClass.gd" id="2_d1r5n"]
+[ext_resource type="Script" path="res://game/generators/generator_stats.gd" id="3_7dubr"]
+[ext_resource type="Script" path="res://game/saved_data.gd" id="4_1hr82"]
+
+[sub_resource type="Resource" id="Resource_joxls"]
+script = ExtResource("1_34de8")
+base_cost = 5.0
+step_add = 1.0
+step_mult = 1.1
+
+[sub_resource type="Resource" id="Resource_j6u20"]
+script = ExtResource("2_d1r5n")
+name = "Hire a colleague"
+amount = 67
+cost_profile = SubResource("Resource_joxls")
+base_speed = 0.0
+base_produce = 0
+produces = 1
+speed = 8.0
+speed_mult = 1.0
+produce_add = 0
+
+[sub_resource type="Resource" id="Resource_t1y6k"]
+script = ExtResource("1_34de8")
+base_cost = 24.99
+step_add = 2.0
+step_mult = 1.3
+
+[sub_resource type="Resource" id="Resource_2rs7x"]
+script = ExtResource("2_d1r5n")
+name = "Hire a colleague ^ 2"
+amount = 19
+cost_profile = SubResource("Resource_t1y6k")
+base_speed = 0.0
+base_produce = 0
+produces = 10
+speed = 10.0
+speed_mult = 1.0
+produce_add = 0
+
+[sub_resource type="Resource" id="Resource_krske"]
+script = ExtResource("3_7dubr")
+resource = Array[ExtResource("2_d1r5n")]([SubResource("Resource_j6u20"), SubResource("Resource_2rs7x")])
+
+[resource]
+script = ExtResource("4_1hr82")
+money = 0.0
+products = 0.0
+product_cost = 0.1
+generators = SubResource("Resource_krske")
+work_speed = 10
+work_produce = 1

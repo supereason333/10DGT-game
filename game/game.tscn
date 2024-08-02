@@ -1,67 +1,201 @@
 [gd_scene load_steps=3 format=3 uid="uid://27r2a465cbnx"]
 
-[ext_resource type="PackedScene" uid="uid://b4ijfkqv0nkdk" path="res://game/generators/generator.tscn" id="2_7rkr1"]
+[ext_resource type="Script" path="res://game/game.gd" id="1_rdq13"]
 
-[sub_resource type="GDScript" id="GDScript_iulk2"]
-script/source = "extends Control
+[sub_resource type="GDScript" id="GDScript_3ecxa"]
+script/source = "extends VBoxContainer
 
-@onready var money_label := $TopBar/VBoxContainer/MoneyLabel
-@onready var product_label := $TopBar/VBoxContainer/ProductLabel
+@onready var progress_bar := $ProgressBar
+@onready var timer := $WorkTimer
+@onready var data_label := $DataLabel
+@onready var pps_label := $NameContainer/PPSLabel
 
-func update_display():
-	money_label.text = \"Money: \" + str(GlobalValues.money)
-	product_label.text = \"Products: \" + str(GlobalValues.products)
 
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	timer.wait_time = GlobalValues.data.work_speed
+	timer.start()
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	update_display()
+	progress_bar.value += 100 * (delta / GlobalValues.data.work_speed)
+	pps_label.text = \"PPS: \" + Formatter.format(GlobalValues.data.work_produce / GlobalValues.data.work_speed)
+	data_label.text = \"Makes \" + str(GlobalValues.data.work_produce) + \" product(s) in \" + str(GlobalValues.data.work_speed) + \" second(s)\"
+
+
+func _on_work_timer_timeout():
+	progress_bar.value = 0
+	GlobalValues.data.products += GlobalValues.data.work_produce
 "
 
-[node name="Game" type="Control"]
+[node name="Game" type="Control" groups=["data_save"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = SubResource("GDScript_iulk2")
+script = ExtResource("1_rdq13")
 
-[node name="TopBar" type="HBoxContainer" parent="."]
+[node name="LeftAligned" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 308.0
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="LeftAligned"]
 layout_mode = 2
-offset_left = 40.0
-offset_top = 40.0
-offset_right = 539.0
-offset_bottom = 96.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopBar"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LeftAligned/TopBar"]
 layout_mode = 2
 
-[node name="MoneyLabel" type="Label" parent="TopBar/VBoxContainer"]
+[node name="MoneyLabel" type="Label" parent="LeftAligned/TopBar/VBoxContainer"]
 layout_mode = 2
 text = "Money: 0"
 
-[node name="ProductLabel" type="Label" parent="TopBar/VBoxContainer"]
+[node name="ProductLabel" type="Label" parent="LeftAligned/TopBar/VBoxContainer"]
 layout_mode = 2
 text = "Products: 0"
 
-[node name="Control" type="Control" parent="TopBar"]
-custom_minimum_size = Vector2(20, 0)
+[node name="LeftPanel" type="VBoxContainer" parent="LeftAligned"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SellContainer" type="VBoxContainer" parent="LeftAligned/LeftPanel"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopBar"]
+[node name="SellButton" type="Button" parent="LeftAligned/LeftPanel/SellContainer"]
 layout_mode = 2
-text = "Other thing"
+text = "Sell products"
 
-[node name="GeneratorContainer" type="ScrollContainer" parent="."]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 192.0
-offset_right = 340.0
-offset_bottom = 904.0
+[node name="CostLabel" type="Label" parent="LeftAligned/LeftPanel/SellContainer"]
+layout_mode = 2
+text = "1 Product = $0.1"
+
+[node name="HSeparator" type="HSeparator" parent="LeftAligned/LeftPanel"]
+layout_mode = 2
+
+[node name="WorkContainer" type="VBoxContainer" parent="LeftAligned/LeftPanel"]
+layout_mode = 2
+script = SubResource("GDScript_3ecxa")
+
+[node name="NameContainer" type="HBoxContainer" parent="LeftAligned/LeftPanel/WorkContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="LeftAligned/LeftPanel/WorkContainer/NameContainer"]
+layout_mode = 2
+text = "Hard work"
+
+[node name="Spacer" type="Control" parent="LeftAligned/LeftPanel/WorkContainer/NameContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PPSLabel" type="Label" parent="LeftAligned/LeftPanel/WorkContainer/NameContainer"]
+layout_mode = 2
+text = "PPS: 1"
+
+[node name="DataLabel" type="Label" parent="LeftAligned/LeftPanel/WorkContainer"]
+layout_mode = 2
+text = "Makes 1 product in 1 second"
+
+[node name="ProgressBar" type="ProgressBar" parent="LeftAligned/LeftPanel/WorkContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+show_percentage = false
+
+[node name="WorkTimer" type="Timer" parent="LeftAligned/LeftPanel/WorkContainer"]
+autostart = true
+
+[node name="HSeparator2" type="HSeparator" parent="LeftAligned/LeftPanel"]
+layout_mode = 2
+
+[node name="GeneratorContainer" type="ScrollContainer" parent="LeftAligned/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GeneratorContainer"]
+[node name="GeneratorContainer" type="VBoxContainer" parent="LeftAligned/LeftPanel/GeneratorContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
-[node name="Generator" parent="GeneratorContainer/VBoxContainer" instance=ExtResource("2_7rkr1")]
+[node name="RightAligned" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -96.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="RightAligned"]
 layout_mode = 2
+text = "text button"
+
+[node name="Button2" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button3" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button4" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button5" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button6" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button7" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button8" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button9" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="Button10" type="Button" parent="RightAligned"]
+layout_mode = 2
+text = "text button"
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 265.0
+offset_right = 1426.0
+offset_bottom = 467.0
+text = "adiojaidojadadaw"
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 747.0
+offset_top = 41.0
+offset_right = 940.0
+offset_bottom = 128.0
+text = "save data"
+
+[connection signal="mouse_entered" from="LeftAligned/LeftPanel/SellContainer/SellButton" to="." method="_on_sell_button_mouse_entered"]
+[connection signal="mouse_exited" from="LeftAligned/LeftPanel/SellContainer/SellButton" to="." method="_on_sell_button_mouse_exited"]
+[connection signal="pressed" from="LeftAligned/LeftPanel/SellContainer/SellButton" to="." method="_on_sell_button_pressed"]
+[connection signal="timeout" from="LeftAligned/LeftPanel/WorkContainer/WorkTimer" to="LeftAligned/LeftPanel/WorkContainer" method="_on_work_timer_timeout"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
